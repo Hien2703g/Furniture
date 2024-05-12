@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({extended:false}));
 
 
 
-app.set("views", "./views");
+app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
 app.use(cookieParser('lemNhem'));
@@ -41,7 +41,10 @@ app.use(flash());
 // App Locals Variables
 app.locals.prefixAdmin= systemConfig.prefixAdmin;
 
-app.use(express.static("public"));
+// console.log(__dirname);
+
+
+app.use(express.static(`${__dirname}/public`));
 
 route(app);
 routeAdmin(app);
