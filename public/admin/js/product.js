@@ -1,0 +1,47 @@
+//change status
+const buttonsChangeStatus=document.querySelectorAll("[button-change-status]");
+if( buttonsChangeStatus.length>0){
+    const formChangeStatus=document.querySelector("#form-change-status");
+    const path=formChangeStatus.getAttribute("data-path");
+
+    buttonsChangeStatus.forEach(button=>{
+        button.addEventListener("click",()=>{
+            const statusCurrent=button.getAttribute("data-status");
+            const id=button.getAttribute("data-id");
+            // console.log(path);
+            let statusChange = statusCurrent=="active" ? "inactive" : "active";
+            const action=path + `/${statusChange}/${id}?_method=PATCH `;
+            // console.log(action);
+            formChangeStatus.action = action;
+
+            formChangeStatus.submit();
+           
+        });
+    });
+}
+//end change status
+
+// Delete Item
+const buttonsDelete=document.querySelectorAll("[button-delete]");
+if(buttonsDelete.length>0){
+    const formDeleteItem=document.querySelector("#form-delete-item");
+    const path=formDeleteItem.getAttribute("data-path");
+    buttonsDelete.forEach(button=>{
+        button.addEventListener("click",()=>{
+            // console.log(button);
+            const isComfirm=confirm("Bạn có muốn xóa sản phẩm này?");
+            if(isComfirm){
+                const id=button.getAttribute("data-id");
+                // console.log(id);
+                const action=`${path}/${id}?_method=DELETE`;
+                // console.log(action);
+                formDeleteItem.action=action;
+                formDeleteItem.submit();
+            }
+
+
+
+        });
+    });
+}
+// End delete item
