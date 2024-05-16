@@ -156,6 +156,7 @@ const showAlert=document.querySelector("[show-alert]");
 if(showAlert){
     const time=parseInt(showAlert.getAttribute("data-time"));
     const closeAlert=showAlert.querySelector("[close-alert]");
+    
     setTimeout(()=>{
         showAlert.classList.add("alert-hidden");
     },time);
@@ -181,6 +182,44 @@ if(uploadImage){
     });
 }
 //end upload Image
+
+//Sort
+const sort=document.querySelector("[sort]");
+// console.log(sort);
+if(sort){
+    let url=new URL(window.location.href);
+    const sortSelect=sort.querySelector("[sort-select]");
+    const sortClear = sort.querySelector("[sort-clear]");
+
+
+    sortSelect.addEventListener("change",(e)=>{
+        // console.log(e);
+        const value= e.target.value;
+        const [sortKey , sortValue]=value.split("-");
+
+        url.searchParams.set("sortKey",sortKey);
+        url.searchParams.set("sortValue",sortValue);
+
+        window.location.href=url.href;
+    });
+    // Xoa sap xep
+    
+    sortClear.addEventListener("click",()=>{
+        url.searchParams.delete("sortKey");
+        url.searchParams.delete("sortValue");
+        window.location.href=url.href;
+    });
+    // them mac dinh selected cho option
+    const sortKey= url.searchParams.get("sortKey");
+    const sortValue=url.searchParams.get("sortValue");
+    if( sortKey && sortValue){
+        const stringSort=`${sortKey}-${sortValue}`;
+        console.log(stringSort);
+        const optionSelect=sortSelect.querySelector(`option[value='${stringSort}']`);
+        optionSelect.selected = true;
+    };
+}
+//end Sort
 
 
 

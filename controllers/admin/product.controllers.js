@@ -32,10 +32,8 @@ module.exports.index = async (req,res)=>{
     }
         
 
-    //phan trang
-    const countProducts = await Product
-    // .sort({position:"desc"})
-    .countDocuments(find);
+   
+    const countProducts = await Product.countDocuments(find);
 
     let objectPagination=PaginationHelper({
         currentPage:1,
@@ -44,25 +42,18 @@ module.exports.index = async (req,res)=>{
         req.query,
         countProducts
     );
-    // if( req.query.page){
-    //     objectPagination.currentPage=parseInt(req.query.page);
-    // }
-
-
-    // objectPagination.skip=(objectPagination.currentPage-1)* objectPagination.limitItems;
-
-    // const countProducts = await Product.countDocuments(find);
-    // const totalPage=Math.ceil(countProducts/objectPagination.limitItems);
-    // // console.log(totalPage);
-    // objectPagination.totalPage=totalPage;
-    //end phan trang
-
-
+    //Sort
+    let sort ={};
+    if( req.query.sortKey && req.query.sortValue){
+        sort[req.query.sortKey]=req.query.sortValue;
+    } else {
+        sort.position="asc";
+    }
+    //end sort
     const products= await Product.find(find)
-    .sort({position:"asc"})
-   
-    // console.log(products);
-    .limit(objectPagination.limitItems).skip(objectPagination.skip);
+        .sort(sort)
+        .limit(objectPagination.limitItems)
+        .skip(objectPagination.skip);
     res.render("admin/pages/products/index",{
         pageTitle:" danh sach san pham",
         products: products,
@@ -209,9 +200,9 @@ module.exports.editPatch = async (req,res)=>{
     req.body.stock=parseInt(req.body.stock);
     req.body.rating=parseFloat(req.body.rating);
     req.body.position=parseInt(req.body.position);
-    if(req.file){
-        req.body.thumbnail=`/uploads/${req.file.filename}`;
-    }
+    // if(req.file){
+    //     req.body.thumbnail=`/uploads/${req.file.filename}`;
+    // }
     
     try{
         await Product.updateOne({_id: id},req.body);
