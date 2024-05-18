@@ -1,6 +1,6 @@
 const express = require('express');
 const methodOverride = require('method-override');
-
+const path=require('path');
 
 const cookieParser=require("cookie-parser");
 const session=require("express-session");
@@ -42,7 +42,9 @@ app.use(flash());
 app.locals.prefixAdmin= systemConfig.prefixAdmin;
 
 console.log(__dirname);
-
+//TinyMCE
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+//endTinyMCE
 
 app.use(express.static(`${__dirname}/public`));
 
